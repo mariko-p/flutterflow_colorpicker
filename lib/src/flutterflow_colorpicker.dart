@@ -174,14 +174,6 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.colorPickerTexts.selectColor,
-                style: GoogleFonts.openSans(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                  color: widget.textColor,
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(6, 0, 0, 20),
                 child: Column(
@@ -361,95 +353,6 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                             : recentColorsWidget(394);
                       }),
                     ],
-                    const SizedBox(height: 12.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          height: 40.0,
-                          width: 96.0,
-                          child: OutlinedButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                widget.textColor,
-                              ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                widget.backgroundColor,
-                              ),
-                              padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                  horizontal: 12.0,
-                                  vertical: 4.0,
-                                ),
-                              ),
-                            ),
-                            child: Text(
-                              widget.colorPickerTexts.cancel,
-                              style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: widget.textColor,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20.0),
-                        SizedBox(
-                          height: 40.0,
-                          width: 86.0,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              if (widget.showRecentColors) {
-                                _addRecentColor(selectedColor);
-                              }
-                              Navigator.of(context).pop(widget.allowOpacity
-                                  ? selectedColor
-                                  : selectedColor.withOpacity(1.0));
-                            },
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  side: BorderSide(
-                                    color: widget.primaryButtonBorderColor,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                widget.primaryButtonTextColor,
-                              ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                widget.primaryButtonBackgroundColor,
-                              ),
-                              padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                  horizontal: 12.0,
-                                  vertical: 4.0,
-                                ),
-                              ),
-                            ),
-                            child: Text(
-                              widget.colorPickerTexts.select,
-                              style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: widget.primaryButtonTextColor,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
