@@ -899,11 +899,6 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
                   UpperCaseTextFormatter(),
                   FilteringTextInputFormatter.allow(RegExp(kValidHexPattern)),
                 ],
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.fromLTRB(14.0, 0.0, 5.0, 18.0),
-                  constraints: BoxConstraints(maxWidth: 120.0),
-                ),
                 style: widget.style,
                 onChanged: (value) {
                   final Color? color = colorFromHex(value);
