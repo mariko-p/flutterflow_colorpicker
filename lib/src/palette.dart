@@ -878,7 +878,6 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
           '#' + (hex.startsWith('FF') ? hex.substring(2) : hex);
     }
     return Container(
-      height: 28.0,
       constraints: const BoxConstraints(maxWidth: 172.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
