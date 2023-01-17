@@ -165,7 +165,7 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                         borderRadius: BorderRadius.circular(4.0),
                         child: SizedBox(
                           width: 220,
-                          height: 136,
+                          height: 110,
                           child: ColorPickerArea(
                             currentHsvColor,
                             (val) => onColorChanged(val.toColor()),
@@ -173,7 +173,7 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 11.0),
+                      const SizedBox(height: 20.0),
                       SizedBox(
                         height: 20.0,
                         child: ColorPickerSlider(
@@ -193,7 +193,7 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                           ),
                         ),
                       ],
-                      const SizedBox(height: 12.0),
+                      const SizedBox(height: 20.0),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
