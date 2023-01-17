@@ -154,130 +154,126 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10.0),
                 Builder(
                   builder: (context) {
                     final currentHsvColor = HSVColor.fromColor(selectedColor);
 
                     onColorChanged(val) => setState(() => selectedColor = val);
 
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(4.0),
-                            child: SizedBox(
-                              width: 220,
-                              height: 136,
-                              child: ColorPickerArea(
-                                currentHsvColor,
-                                (val) => onColorChanged(val.toColor()),
-                                PaletteType.hsvWithHue,
-                              ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4.0),
+                          child: SizedBox(
+                            width: 220,
+                            height: 136,
+                            child: ColorPickerArea(
+                              currentHsvColor,
+                              (val) => onColorChanged(val.toColor()),
+                              PaletteType.hsvWithHue,
                             ),
                           ),
-                          const SizedBox(height: 11.0),
+                        ),
+                        const SizedBox(height: 11.0),
+                        SizedBox(
+                          height: 20.0,
+                          child: ColorPickerSlider(
+                            TrackType.hue,
+                            currentHsvColor,
+                            (color) => onColorChanged(color.toColor()),
+                          ),
+                        ),
+                        if (widget.allowOpacity) ...[
+                          const SizedBox(height: 15.0),
                           SizedBox(
-                            height: 20.0,
+                            height: 21.0,
                             child: ColorPickerSlider(
-                              TrackType.hue,
+                              TrackType.alpha,
                               currentHsvColor,
                               (color) => onColorChanged(color.toColor()),
                             ),
                           ),
-                          if (widget.allowOpacity) ...[
-                            const SizedBox(height: 15.0),
-                            SizedBox(
-                              height: 21.0,
-                              child: ColorPickerSlider(
-                                TrackType.alpha,
-                                currentHsvColor,
-                                (color) => onColorChanged(color.toColor()),
-                              ),
-                            ),
-                          ],
-                          const SizedBox(height: 12.0),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 24.0,
-                                      child: DropdownButton<ColorLabelType>(
-                                        value: colorType,
-                                        dropdownColor: Colors.black,
-                                        focusColor: Colors.transparent,
-                                        underline: Container(),
-                                        icon: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Icon(
-                                            Icons.keyboard_arrow_down,
-                                            size: 18.0,
-                                            color: widget.secondaryTextColor,
-                                          ),
+                        ],
+                        const SizedBox(height: 12.0),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 24.0,
+                                    child: DropdownButton<ColorLabelType>(
+                                      value: colorType,
+                                      dropdownColor: Colors.black,
+                                      focusColor: Colors.transparent,
+                                      underline: Container(),
+                                      icon: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 18.0,
+                                          color: widget.secondaryTextColor,
                                         ),
-                                        items: _colorTypes.keys
-                                            .map(
-                                              (type) => DropdownMenuItem(
-                                                value: type,
-                                                child: Text(
-                                                  type
-                                                      .toString()
-                                                      .split('.')
-                                                      .last
-                                                      .toUpperCase(),
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 10,
-                                                    color: widget
-                                                        .secondaryTextColor,
-                                                  ),
+                                      ),
+                                      items: _colorTypes.keys
+                                          .map(
+                                            (type) => DropdownMenuItem(
+                                              value: type,
+                                              child: Text(
+                                                type
+                                                    .toString()
+                                                    .split('.')
+                                                    .last
+                                                    .toUpperCase(),
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 10,
+                                                  color:
+                                                      widget.secondaryTextColor,
                                                 ),
                                               ),
-                                            )
-                                            .toList(),
-                                        onChanged: (type) =>
-                                            setState(() => colorType = type),
-                                      ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      onChanged: (type) =>
+                                          setState(() => colorType = type),
                                     ),
-                                    ColorPickerInput(
-                                      currentHsvColor.toColor(),
-                                      (color) => onColorChanged(color),
-                                      showColor: true,
-                                      style: GoogleFonts.openSans(
-                                        color: widget.textColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
+                                  ),
+                                  ColorPickerInput(
+                                    currentHsvColor.toColor(),
+                                    (color) => onColorChanged(color),
+                                    showColor: true,
+                                    style: GoogleFonts.openSans(
+                                      color: widget.textColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 12.0),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: _colorValueLabels(
-                                  currentHsvColor,
-                                  widget.allowOpacity,
-                                  widget.textColor,
-                                  widget.secondaryTextColor,
-                                )
-                                    .map((w) => Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5.0),
-                                          child: w,
-                                        ))
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            const SizedBox(width: 12.0),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: _colorValueLabels(
+                                currentHsvColor,
+                                widget.allowOpacity,
+                                widget.textColor,
+                                widget.secondaryTextColor,
+                              )
+                                  .map((w) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 5.0),
+                                        child: w,
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                      ],
                     );
                   },
                 ),
