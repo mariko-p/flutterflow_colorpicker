@@ -877,14 +877,17 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
       textEditingController.text =
           '#' + (hex.startsWith('FF') ? hex.substring(2) : hex);
     }
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0),
-      child: Container(
-        height: 32.0,
-        constraints: const BoxConstraints(maxWidth: 172.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFF262D34)),
-          borderRadius: BorderRadius.circular(8.0),
+    return Container(
+      height: 28.0,
+      constraints: const BoxConstraints(maxWidth: 172.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 5.0,
+          horizontal: 6.0,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -919,12 +922,11 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
                 color: widget.color,
                 border: Border.all(
                   width: 1.0,
-                  color: const Color(0xFF323B45),
+                  color: Colors.black,
                 ),
-                borderRadius: BorderRadius.circular(4.0),
+                borderRadius: BorderRadius.circular(5.0),
               ),
             ),
-            const SizedBox(width: 14.0),
           ],
         ),
       ),

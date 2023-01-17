@@ -202,42 +202,54 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
-                                  height: 24.0,
-                                  child: DropdownButton<ColorLabelType>(
-                                    value: colorType,
-                                    dropdownColor: Colors.black,
-                                    focusColor: Colors.transparent,
-                                    underline: Container(),
-                                    icon: Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: Icon(
-                                        Icons.keyboard_arrow_down,
-                                        size: 18.0,
-                                        color: widget.secondaryTextColor,
-                                      ),
+                                  height: 26.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 4.0,
+                                      top: 6.0,
+                                      bottom: 6.0,
                                     ),
-                                    items: _colorTypes.keys
-                                        .map(
-                                          (type) => DropdownMenuItem(
-                                            value: type,
-                                            child: Text(
-                                              type
-                                                  .toString()
-                                                  .split('.')
-                                                  .last
-                                                  .toUpperCase(),
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 10,
-                                                color:
-                                                    widget.secondaryTextColor,
+                                    child: DropdownButton<ColorLabelType>(
+                                      value: colorType,
+                                      dropdownColor: Colors.black,
+                                      focusColor: Colors.transparent,
+                                      underline: Container(),
+                                      icon: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 4.0,
+                                        ),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 18.0,
+                                          color: widget.secondaryTextColor,
+                                        ),
+                                      ),
+                                      items: _colorTypes.keys
+                                          .map(
+                                            (type) => DropdownMenuItem(
+                                              value: type,
+                                              child: Text(
+                                                type
+                                                    .toString()
+                                                    .split('.')
+                                                    .last
+                                                    .toUpperCase(),
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 10,
+                                                  color:
+                                                      widget.secondaryTextColor,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    onChanged: (type) =>
-                                        setState(() => colorType = type),
+                                          )
+                                          .toList(),
+                                      onChanged: (type) =>
+                                          setState(() => colorType = type),
+                                    ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
                                 ),
                                 ColorPickerInput(
                                   currentHsvColor.toColor(),
