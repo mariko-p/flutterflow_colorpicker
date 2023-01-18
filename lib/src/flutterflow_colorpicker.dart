@@ -28,19 +28,29 @@ Future<Color?> showFFColorPicker(
   Color? primaryButtonBackgroundColor,
   Color? primaryButtonTextColor,
   Color? primaryButtonBorderColor,
+  TextStyle? primaryTextStyle,
+  TextStyle? secondaryTextStyle,
+  required ValueChanged<Color> onColorChanged,
 }) {
   final colorPicker = FFColorPickerDialog(
     currentColor: currentColor,
     showRecentColors: showRecentColors,
     allowOpacity: allowOpacity,
-    textColor: textColor ?? Colors.white,
-    secondaryTextColor: secondaryTextColor ?? const Color(0xFF95A1AC),
     backgroundColor: backgroundColor ?? const Color(0xFF14181B),
     primaryButtonBackgroundColor:
         primaryButtonBackgroundColor ?? const Color(0xFF4542e6),
     primaryButtonTextColor: primaryButtonTextColor ?? Colors.white,
     primaryButtonBorderColor: primaryButtonBorderColor ?? Colors.transparent,
     displayAsBottomSheet: displayAsBottomSheet,
+    primaryTextStyle: GoogleFonts.openSans(
+      fontSize: 10,
+      color: textColor ?? Colors.white,
+    ),
+    secondaryTextStyle: GoogleFonts.openSans(
+      fontSize: 10,
+      color: secondaryTextColor ?? const Color(0xFF95A1AC),
+    ),
+    onColorChanged: onColorChanged,
   );
 
   if (displayAsBottomSheet) {
@@ -80,24 +90,26 @@ class FFColorPickerDialog extends StatefulWidget {
     this.showRecentColors = false,
     this.allowOpacity = true,
     required this.displayAsBottomSheet,
-    this.textColor = Colors.white,
-    this.secondaryTextColor = const Color(0xFF95A1AC),
     this.backgroundColor = const Color(0xFF14181B),
     this.primaryButtonBackgroundColor = const Color(0xFF4542e6),
     this.primaryButtonTextColor = Colors.white,
     this.primaryButtonBorderColor = Colors.transparent,
+    required this.primaryTextStyle,
+    required this.secondaryTextStyle,
+    required this.onColorChanged,
   }) : super(key: key);
 
   final Color? currentColor;
   final bool showRecentColors;
   final bool allowOpacity;
   final bool displayAsBottomSheet;
-  final Color textColor;
-  final Color secondaryTextColor;
   final Color backgroundColor;
   final Color primaryButtonBackgroundColor;
   final Color primaryButtonTextColor;
   final Color primaryButtonBorderColor;
+  final TextStyle primaryTextStyle;
+  final TextStyle secondaryTextStyle;
+  final ValueChanged<Color> onColorChanged;
 
   @override
   _FFColorPickerDialogState createState() => _FFColorPickerDialogState();
@@ -147,7 +159,7 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
       color: widget.backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +168,10 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                 builder: (context) {
                   final currentHsvColor = HSVColor.fromColor(selectedColor);
 
-                  onColorChanged(val) => setState(() => selectedColor = val);
+                  onColorChanged(val) {
+                    setState(() => selectedColor = val);
+                    widget.onColorChanged(val);
+                  }
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -193,8 +208,10 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                           ),
                         ),
                       ],
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 28.0),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Flexible(
@@ -210,19 +227,16 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                                       bottom: 6.0,
                                     ),
                                     child: DropdownButton<ColorLabelType>(
+                                      alignment: AlignmentDirectional.center,
                                       value: colorType,
-                                      dropdownColor: Colors.black,
+                                      isDense: true,
+                                      dropdownColor: Colors.white,
                                       focusColor: Colors.transparent,
                                       underline: Container(),
-                                      icon: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 4.0,
-                                        ),
-                                        child: Icon(
-                                          Icons.keyboard_arrow_down,
-                                          size: 18.0,
-                                          color: widget.secondaryTextColor,
-                                        ),
+                                      iconSize: 16,
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.black,
                                       ),
                                       items: _colorTypes.keys
                                           .map(
@@ -234,10 +248,9 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                                                     .split('.')
                                                     .last
                                                     .toUpperCase(),
-                                                style: GoogleFonts.openSans(
+                                                style: widget.secondaryTextStyle
+                                                    .copyWith(
                                                   fontSize: 10,
-                                                  color:
-                                                      widget.secondaryTextColor,
                                                 ),
                                               ),
                                             ),
@@ -255,29 +268,35 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
                                   currentHsvColor.toColor(),
                                   (color) => onColorChanged(color),
                                   showColor: true,
-                                  style: GoogleFonts.openSans(
-                                    color: widget.textColor,
-                                    fontWeight: FontWeight.bold,
+                                  style: widget.primaryTextStyle.copyWith(
                                     fontSize: 12,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12.0),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: _colorValueLabels(
-                              currentHsvColor,
-                              widget.allowOpacity,
-                              widget.textColor,
-                              widget.secondaryTextColor,
-                            )
-                                .map((w) => Padding(
-                                      padding: const EdgeInsets.only(top: 5.0),
-                                      child: w,
-                                    ))
-                                .toList(),
+                          const SizedBox(width: 28.0),
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: _colorValueLabels(
+                                  currentHsvColor,
+                                  widget.allowOpacity,
+                                  widget.primaryTextStyle,
+                                  widget.secondaryTextStyle,
+                                )
+                                    .map((w) => Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5.0),
+                                          child: w,
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -324,8 +343,8 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
   List<Widget> _colorValueLabels(
     HSVColor hsvColor,
     bool allowOpacity,
-    Color textColor,
-    Color secondaryTextColor,
+    TextStyle primaryTextStyle,
+    TextStyle secondaryTextStyle,
   ) {
     final colorTypes = allowOpacity
         ? _colorTypes[colorType!]
@@ -333,32 +352,32 @@ class _FFColorPickerDialogState extends State<FFColorPickerDialog> {
 
     return colorTypes!
         .map(
-          (item) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 24.0),
-              child: Column(
-                children: <Widget>[
-                  Text(
+          (item) => ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 50.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 26,
+                  child: Text(
                     item,
-                    style: GoogleFonts.openSans(
+                    style: secondaryTextStyle.copyWith(
                       fontSize: 12,
-                      color: secondaryTextColor,
                     ),
                   ),
-                  const SizedBox(height: 14.0),
-                  Text(
+                ),
+                const SizedBox(height: 5.0),
+                SizedBox(
+                  height: 26,
+                  child: Text(
                     _colorValue(hsvColor, colorType)[
                         _colorTypes[colorType!]!.indexOf(item)],
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.openSans(
-                      fontWeight: FontWeight.bold,
+                    style: primaryTextStyle.copyWith(
                       fontSize: 12,
-                      color: textColor,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         )

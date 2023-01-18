@@ -785,6 +785,12 @@ class ThumbPainter extends CustomPainter {
         Offset(0.0, size.height * 0.4),
         size.height,
         Paint()
+          ..color = const Color(0xFFF3F3F3)
+          ..style = PaintingStyle.fill);
+    canvas.drawCircle(
+        Offset(0.0, size.height * 0.4),
+        size.height - 0.5,
+        Paint()
           ..color = Colors.white
           ..style = PaintingStyle.fill);
     if (thumbColor != null) {
@@ -878,7 +884,10 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
           '#' + (hex.startsWith('FF') ? hex.substring(2) : hex);
     }
     return Container(
-      constraints: const BoxConstraints(maxWidth: 172.0),
+      constraints: const BoxConstraints(
+        maxWidth: 172.0,
+        minWidth: 172.0,
+      ),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(4.0),
@@ -892,21 +901,43 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
-              child: TextField(
-                enabled: !widget.disable,
-                controller: textEditingController,
-                inputFormatters: [
-                  UpperCaseTextFormatter(),
-                  FilteringTextInputFormatter.allow(RegExp(kValidHexPattern)),
-                ],
-                style: widget.style,
-                onChanged: (value) {
-                  final Color? color = colorFromHex(value);
-                  if (color != null) {
-                    widget.onColorChanged(color);
-                    inputColor = color.value;
-                  }
-                },
+              child: SizedBox(
+                height: 12,
+                child: TextFormField(
+                  enabled: !widget.disable,
+                  controller: textEditingController,
+                  inputFormatters: [
+                    UpperCaseTextFormatter(),
+                    FilteringTextInputFormatter.allow(RegExp(kValidHexPattern)),
+                  ],
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                      gapPadding: 0,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color(0x00000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  style: widget.style,
+                  onChanged: (value) {
+                    final Color? color = colorFromHex(value);
+                    if (color != null) {
+                      widget.onColorChanged(color);
+                      inputColor = color.value;
+                    }
+                  },
+                ),
               ),
             ),
             Container(
